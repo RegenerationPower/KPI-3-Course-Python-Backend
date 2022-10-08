@@ -1,6 +1,6 @@
-import datetime
-from flask import jsonify, request
 from main import app
+from flask import jsonify, request
+import datetime
 
 
 user_id = 1
@@ -47,9 +47,18 @@ def get_users():
 
 @app.route("/user", methods=['Post'])
 def create_user():
-    request_data = request.get_json()
+    request_data = {}
+    global user_id
+    user_id += 1
+    request_data["id"] = user_id
+    try:
+        request_data["name"] = request.get_json()["name"]
+    except:
+        request_data["name"] = "User" + str(user_id)
+
     USERS.append(request_data)
-    return jsonify(request_data)
+    print(USERS)
+    return request_data
 
 
 @app.route("/notations")
