@@ -9,7 +9,7 @@ notations_id = 1
 
 CATEGORIES = [{
     "id": categories_id,
-    "category name": "Shopping",
+    "category_name": "Shopping",
 }]
 
 
@@ -19,13 +19,20 @@ USERS = [{
 }]
 
 
-NOTATION = [{
+NOTATIONS = [{
     "id": notations_id,
     "user_id": users_id,
     "category_id": categories_id,
     "price": 1000,
-    "date_of_creating": datetime.date.today()
+    "date_of_creating": datetime.datetime.now()
 }]
+
+
+def validation(key, value, arr):
+    for i in arr:
+        if i[key] == value:
+            return True
+    return False
 
 
 @app.route("/categories")
@@ -40,9 +47,9 @@ def create_category():
     categories_id += 1
     request_data["id"] = categories_id
     try:
-        request_data["category name"] = request.get_json()["category name"]
+        request_data["category_name"] = request.get_json()["category_name"]
     except:
-        request_data["category name"] = "Category name" + str(categories_id)
+        return "Incorrect input"
 
     CATEGORIES.append(request_data)
     return request_data
@@ -62,7 +69,7 @@ def create_user():
     try:
         request_data["name"] = request.get_json()["name"]
     except:
-        request_data["name"] = "User" + str(users_id)
+        return "Incorrect input"
 
     USERS.append(request_data)
     return request_data
@@ -70,11 +77,23 @@ def create_user():
 
 @app.route("/notations")
 def get_notations():
-    return jsonify({"notations": NOTATION})
+    return jsonify({"notations": NOTATIONS})
 
 
 @app.route("/notation", methods=['Post'])
 def create_notation():
     request_data = request.get_json()
-    NOTATION.append(request_data)
-    return jsonify(request_data)
+    global note_id
+    note_id += 1
+    try:
+        if not (validation("id", request.get_json()["user_id"], USERS) and validation("id",
+                request.get_json()["category_id"], CATEGORIES)):
+            return "User or category not found"
+        request_data["id"] = note_id
+        request_data["date_of_creating"] = datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")
+        request_data["price"] = request.get_json()["price"]
+    except:
+        return "Error bad request"
+
+    NOTATIONS.append(request_data)
+    return request_data
