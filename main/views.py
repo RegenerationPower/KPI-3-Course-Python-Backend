@@ -3,25 +3,25 @@ from flask import jsonify, request
 import datetime
 
 
-user_id = 1
+users_id = 1
 categories_id = 1
-notation_id = 1
+notations_id = 1
 
 CATEGORIES = [{
     "id": categories_id,
-    "name": "Shopping",
+    "category name": "Shopping",
 }]
 
 
 USERS = [{
-    "id": user_id,
+    "id": users_id,
     "name": "John",
 }]
 
 
 NOTATION = [{
-    "id": notation_id,
-    "user_id": user_id,
+    "id": notations_id,
+    "user_id": users_id,
     "category_id": categories_id,
     "price": 1000,
     "date_of_creating": datetime.date.today()
@@ -35,9 +35,17 @@ def get_categories():
 
 @app.route("/category", methods=['Post'])
 def create_category():
-    request_data = request.get_json()
+    request_data = {}
+    global categories_id
+    categories_id += 1
+    request_data["id"] = categories_id
+    try:
+        request_data["category name"] = request.get_json()["category name"]
+    except:
+        request_data["category name"] = "Category name" + str(categories_id)
+
     CATEGORIES.append(request_data)
-    return jsonify(request_data)
+    return request_data
 
 
 @app.route("/users")
@@ -48,16 +56,15 @@ def get_users():
 @app.route("/user", methods=['Post'])
 def create_user():
     request_data = {}
-    global user_id
-    user_id += 1
-    request_data["id"] = user_id
+    global users_id
+    users_id += 1
+    request_data["id"] = users_id
     try:
         request_data["name"] = request.get_json()["name"]
     except:
-        request_data["name"] = "User" + str(user_id)
+        request_data["name"] = "User" + str(users_id)
 
     USERS.append(request_data)
-    print(USERS)
     return request_data
 
 
