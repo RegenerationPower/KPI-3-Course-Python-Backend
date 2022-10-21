@@ -35,6 +35,11 @@ def validation(key, value, arr):
     return False
 
 
+@app.route("/")
+def home():
+    return "Lab1 IO-04 Voznytsia Dmytro"
+
+
 @app.route("/categories")
 def get_categories():
     return jsonify({"categories": CATEGORIES})
