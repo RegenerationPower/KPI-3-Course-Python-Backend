@@ -37,7 +37,7 @@ def validation(key, value, arr):
 
 @app.route("/")
 def home():
-    return "Lab1 IO-04 Voznytsia Dmytro"
+    return "Lab2 IO-04 Voznytsia Dmytro"
 
 
 @app.route("/categories")
