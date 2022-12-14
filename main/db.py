@@ -1,32 +1,28 @@
 import datetime
 
-user_id = 1
-category_id = 1
-note_id = 1
+users_id = 1
+categories_id = 1
+notations_id = 1
 
-CATEGORIES = [
-    {
-        "id": category_id,
-        "title": "Medicine"
-    }
-]
+CATEGORIES = [{
+    "id": categories_id,
+    "category_name": "Shopping",
+}]
 
-USERS = [
-    {
-        "id": user_id,
-        "name": "Roma",
-    }
-]
 
-NOTES = [
-    {
-        "id": note_id,
-        "user_id": user_id,
-        "category_id": category_id,
-        "price": 100,
-        "date_of_creating": datetime.datetime.now()
-    }
-]
+USERS = [{
+    "id": users_id,
+    "name": "John",
+}]
+
+
+NOTATIONS = [{
+    "id": notations_id,
+    "user_id": users_id,
+    "category_id": categories_id,
+    "price": 1000,
+    "date_of_creating": datetime.datetime.now()
+}]
 
 from flask_sqlalchemy import SQLAlchemy
 
